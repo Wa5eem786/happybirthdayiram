@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Aneeba | The Queen's Day 👑</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&family=Playfair+Display:italic,wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --accent: #ffb7c5;
+            --glass: rgba(255, 255, 255, 0.18);
+            --text: #2d3436;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 2s ease;
+        }
+
+        body.light-on {
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ffd1ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(0.5px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        .container {
+            width: 92%;
+            max-width: 500px;
+            z-index: 10;
+            perspective: 1200px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 35px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            display: none;
+            transform-style: preserve-3d;
+            animation: slideIn 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateZ(-100px) translateY(30px); }
+            to { opacity: 1; transform: translateZ(0) translateY(0); }
+        }
+
+        .active { display: block; }
+
+        h1 { font-family: 'Pacifico', cursive; font-size: 2.4rem; color: #ff4d6d; margin-bottom: 20px; text-shadow: 2px 2px 10px rgba(255,77,109,0.2); }
+        .poetry-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; line-height: 1.8; color: #444; }
+        
+        .luxury-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+            transition: 0.4s;
+            margin-top: 25px;
+        }
+
+        .luxury-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 77, 109, 0.6);
+        }
+
+        .meter-box {
+            position: relative;
+            height: 14px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 20px;
+            margin: 35px 0;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        #progress {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff4d6d, #ff8fa3);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .story-text { opacity: 0; transform: translateY(15px); transition: 1.2s; margin: 12px 0; font-size: 1.1rem; color: #333; }
+        .story-text.visible { opacity: 1; transform: translateY(0); }
+
+        .bulb-btn {
+            font-size: 70px;
+            cursor: pointer;
+            animation: pulse 2.5s infinite;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="music" src="https://www.soundjay.com/misc/sounds/happy-birthday-instrumental-01.mp3" loop></audio>
+
+    <div class="container">
+        <div id="step-1" class="card active" style="background: none; border: none; box-shadow: none;">
+            <h2 style="color: #fff; font-weight: 300; letter-spacing: 1px;">Why is it so dark in here...?</h2>
+            <p style="color: rgba(255,255,255,0.8); margin: 20px 0;">Maybe it’s time to turn the lights on 💡</p>
+            <div class="bulb-btn" onclick="initiate()">💡</div>
+        </div>
+
+        <div id="step-2" class="card">
+            <h1>Happy Birthday Aneeba!👑</h1>
+            <p style="font-weight: 600; color: #555; margin-bottom: 25px;">"Dabby main dabba, dabby main cake,<br>meri paglii Aneeba (Iram) lakhon main aik 😊"</p>
+            <div id="poetry-box" class="poetry-text"></div>
+            <button class="luxury-btn" id="next-1" style="display:none;" onclick="showStep(3)">Keep Going ✨</button>
+        </div>
+
+        <div id="step-3" class="card">
+            <h1>I Like You 🤍</h1>
+            <div id="reason-content" style="font-size: 1.3rem; min-height: 80px; display:flex; align-items:center; justify-content:center; margin: 20px 0; color: var(--primary); font-weight: 600;">Click to find out...</div>
+            <button class="luxury-btn" id="reason-btn" onclick="revealReason()">Tell me why! 💕</button>
+        </div>
+
+        <div id="step-4" class="card">
+            <h1 style="font-size: 1.8rem;">Analyzing My Love...</h1>
+            <div class="meter-box"><div id="progress"></div></div>
+            <h2 id="percent-val" style="color: var(--primary);">0%</h2>
+        </div>
+
+        <div id="step-5" class="card">
+            <h1 style="font-size: 1.6rem; margin-bottom: 20px;">The Tale of Aneeba🌸</h1>
+            <div id="story-container"></div>
+            <button class="luxury-btn" id="final-btn" style="display:none;" onclick="showStep(6); startFinale();">Celebrate Her! 🎂</button>
+        </div>
+
+        <div id="step-6" class="card">
+            <h1 style="font-size: 3.5rem;">✨🎂✨</h1>
+            <h2 style="font-family: 'Pacifico'; color: var(--primary); font-size: 2.2rem;">Happy Birthday, Aneeba!</h2>
+            <p style="margin: 25px 0; font-size: 1.1rem; line-height: 1.6;">May your beautiful chaos always light up the world, you absolute legend.</p>
+            <p style="font-size: 0.85rem; color: #999; margin-top: 10px;">Made with lots of love by WASEEM 😉</p>
+        </div>
+    </div>
+
+    <script>
+        const poetry = ["Mera aik dost hy,", "hath usky soft hain,", "dikhny main wo beautiful most hy,", "subka wo host hy,", "heart uska bohat soft hy,", "dimagh uska kahin lost hy,", "cute wo bohat hy,", "wo mery liye aik beautiful thought hy,", "gosht usmy bohat hy😂,", "that's why wo mera dost hy 💕"];
+        const reasons = ["Because you're pretty 💖", "Because your hands are soft (no touchy yet 😌)", "Because you're fluffy 🥺", "Because you are fun 🎉", "Because you are pagliiii 🤭", "Because you're my love ❤️"];
+        const story = ["Once upon a time, there was a girl named Aneeba…", "She had a smile that could light up the world,", "and a heart so soft it could melt even the coldest day.", "She sometimes danced like nobody was watching 💃,", "ate cake like a champion 🍰,", "and made everyone around her laugh with her paglii-ness 🤪.", "Today, we celebrate her, her laughter, her quirks, and her beautiful chaos 🌸"];
+
+        function initiate() {
+            document.body.classList.add('light-on');
+            const audio = document.getElementById('music');
+            audio.volume = 0.6;
+            audio.play().catch(err => console.log("Audio needs interaction first"));
+            createDecor();
+            showStep(2);
+            typePoetry();
+        }
+
+        function showStep(num) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.getElementById('step-' + num).classList.add('active');
+            if(num === 4) runMeter();
+        }
+
+        async function typePoetry() {
+            const box = document.getElementById('poetry-box');
+            for(let line of poetry) {
+                let p = document.createElement('div');
+                p.style.marginBottom = "10px";
+                box.appendChild(p);
+                for(let char of line) {
+                    p.innerHTML += char;
+                    await new Promise(r => setTimeout(r, 45));
+                }
+                await new Promise(r => setTimeout(r, 700));
+            }
+            document.getElementById('next-1').style.display = "inline-block";
+        }
+
+        let currentReason = 0;
+        function revealReason() {
+            if(currentReason < reasons.length) {
+                document.getElementById('reason-content').innerText = reasons[currentReason++];
+                confetti({ particleCount: 45, spread: 70, origin: { y: 0.75 }, colors: ['#ff4d6d', '#ffffff', '#ffb7c5'] });
+            } else {
+                showStep(4);
+            }
+        }
+
+        function runMeter() {
+            let prog = document.getElementById('progress');
+            let perc = document.getElementById('percent-val');
+            let val = 0;
+            let interval = setInterval(() => {
+                val++;
+                prog.style.width = val + '%';
+                perc.innerText = val + '%';
+                if(val >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => showStep(5), 1200);
+                    setTimeout(runStory, 1800);
+                }
+            }, 60);
+        }
+
+        function runStory() {
+            const container = document.getElementById('story-container');
+            story.forEach((text, i) => {
+                let p = document.createElement('p');
+                p.className = 'story-text';
+                p.innerText = text;
+                container.appendChild(p);
+                setTimeout(() => {
+                    p.classList.add('visible');
+                    confetti({ particleCount: 12, spread: 40, origin: { y: 0.6 }, colors: ['#ffffff', '#ffb7c5'] });
+                }, i * 3200);
+            });
+            setTimeout(() => document.getElementById('final-btn').style.display = 'inline-block', story.length * 3200);
+        }
+
+        function startFinale() {
+            var end = Date.now() + (20 * 1000);
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#ff4d6d', '#ffb7c5', '#ffffff'] });
+                confetti({ particleCount: 5, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#ff4d6d', '#ffb7c5', '#ffffff'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        function createDecor() {
+            const icons = ['✨', '🌸', '💖', '🤍', '🍰', '🎈'];
+            for(let i=0; i<25; i++) {
+                let d = document.createElement('div');
+                d.className = 'floating';
+                d.innerText = icons[Math.floor(Math.random()*icons.length)];
+                d.style.left = Math.random() * 100 + 'vw';
+                d.style.top = Math.random() * 100 + 'vh';
+                d.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                d.style.animationDelay = (Math.random() * 5) + 's';
+                d.style.opacity = "0.6";
+                document.body.appendChild(d);
+            }
+        }
+    </script>
+</body>
+</html>
